@@ -50,15 +50,44 @@ app.use(helmet());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// CORS debugging middleware
+app.use((req, res, next) => {
+  console.log('🌐 CORS Debug:', {
+    origin: req.headers.origin,
+    method: req.method,
+    url: req.url,
+    userAgent: req.headers['user-agent']
+  });
+  next();
+});
+
 // Enable CORS
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:8080', 
-    'https://odo-ox-iitg.vercel.app',
-    process.env.FRONTEND_URL
-  ].filter(Boolean),
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:8080', 
+      'https://odo-ox-iitg.vercel.app',
+      'https://odooxiitg.vercel.app',
+      process.env.FRONTEND_URL
+    ].filter(Boolean);
+    
+    console.log('🔍 CORS Check:', { origin, allowedOrigins });
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log('❌ CORS Blocked:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  optionsSuccessStatus: 200
 }));
 
 // Rate limiting

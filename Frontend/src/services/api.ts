@@ -84,16 +84,35 @@ const apiRequest = async <T>(
   };
 
   try {
+    console.log('🚀 Making API request:', {
+      url: `${API_BASE_URL}${endpoint}`,
+      method: config.method || 'GET',
+      headers: config.headers
+    });
+
     const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+
+    console.log('📡 API Response:', {
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries(response.headers.entries())
+    });
+
     const data = await response.json();
 
     if (!response.ok) {
+      console.error('❌ API Error Response:', data);
       throw new Error(data.error || `HTTP error! status: ${response.status}`);
     }
 
+    console.log('✅ API Success Response:', data);
     return data;
   } catch (error) {
-    console.error('API request failed:', error);
+    console.error('💥 API request failed:', {
+      error: error.message,
+      endpoint,
+      url: `${API_BASE_URL}${endpoint}`
+    });
     throw error;
   }
 };
