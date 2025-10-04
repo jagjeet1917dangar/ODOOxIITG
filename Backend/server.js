@@ -88,6 +88,17 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
     message: 'Server is running',
+    timestamp: new Date().toISOString(),
+    port: PORT,
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// Root endpoint for basic connectivity test
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Expense Management API is running',
     timestamp: new Date().toISOString()
   });
 });
@@ -97,6 +108,11 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
+// Log port configuration for debugging
+console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+console.log(`Port from env: ${process.env.PORT || 'not set'}`);
+console.log(`Using port: ${PORT}`);
+
 const server = http.createServer(app);
 
 // Initialize real-time service
@@ -104,9 +120,11 @@ realtimeService.initialize(server);
 
 server.listen(
   PORT,
-  console.log(
-    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
-  )
+  '0.0.0.0',
+  () => {
+    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold);
+    console.log(`Server accessible at http://0.0.0.0:${PORT}`.green);
+  }
 );
 
 // Handle unhandled promise rejections

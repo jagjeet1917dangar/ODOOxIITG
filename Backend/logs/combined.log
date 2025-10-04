@@ -28,3 +28,6 @@
 {"level":"info","message":"User connected: pAD4s7KG33bUgoeYAAAT","service":"expense-management-api","timestamp":"2025-10-04T11:17:07.735Z"}
 {"level":"info","message":"User undefined joined company 68e0fb90cd6940075442bfef","service":"expense-management-api","timestamp":"2025-10-04T11:17:07.737Z"}
 {"level":"info","message":"User undefined disconnected from company 68e0fb90cd6940075442bfef","service":"expense-management-api","timestamp":"2025-10-04T11:18:21.789Z"}
+{"level":"info","message":"Real-time service initialized","service":"expense-management-api","timestamp":"2025-10-04T11:23:52.616Z"}
+{"level":"info","message":"User connected: aJOPyNZyDD0-QK09AAAB","service":"expense-management-api","timestamp":"2025-10-04T11:23:52.826Z"}
+{"level":"info","message":"Real-time service initialized","service":"expense-management-api","timestamp":"2025-10-04T11:26:01.105Z"}
